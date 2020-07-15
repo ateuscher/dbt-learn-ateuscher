@@ -1,5 +1,7 @@
- with payments as (
-     select * from {{ ref('stg_payments') }}
+ with summed_payments as (
+     select order_id, sum(amount) as amount
+     from {{ ref('stg_payments') }}
+     group by 1
  ),
 
  orders as (
@@ -7,10 +9,7 @@
  )
  
  
- select orders.order_id, 
-    orders.user_id,
-    orders.order_date,
-    orders.status,
-    payments.amount
- from payments 
- join orders on payments.order_id = orders.order_id
+ select orders.*,
+    summed_payments.amount
+ from summed_payments 
+ join orders on summed_payments.order_id = orders.order_id
