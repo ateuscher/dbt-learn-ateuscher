@@ -1,8 +1,6 @@
 {% set payment_methods = ['bank_transfer','coupon','credit_card','gift_card'] %}
 
-{% macro to_dollars(column_name, precision=0) -%}
-  round({{ column_name }} / 100, {{ precision }})
-{%- endmacro %}
+
 
 with payments as (
   select *
